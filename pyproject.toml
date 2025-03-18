@@ -1,17 +1,14 @@
-"""
-Poetry configuration file.
-"""
-
 [tool.poetry]
-name = "my-python-app"
+name = "ai-sentiment-analyzer"
 version = "0.1.0"
-description = "A template for Python applications using Poetry"
+description = "A sentiment analysis tool using DistilBERT"
 authors = ["Ofelia Webb <ofelia.b.webb@gmail.com>"]
 readme = "README.md"
-packages = [{include = "app"}]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.8.1"
+torch = "^2.0.0"
+transformers = "^4.30.0"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^7.3.1"
@@ -40,4 +37,4 @@ disallow_incomplete_defs = true
 
 [build-system]
 requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+build-backend = "poetry.core.masonry.api" 
