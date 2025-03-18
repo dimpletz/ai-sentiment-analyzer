@@ -102,32 +102,17 @@ ai-sentiment-analyzer/
 │   │   ├── sentiment_utils.py  # High-level utility functions
 │   │   └── sentiment_analyzer.py# Core sentiment analysis logic
 │   └── main.py                 # Application entry point
-├── tests/                      # Test files
+├── tests/
+│   ├── unit/
+│   │   ├── test_sentiment_analyzer.py  # Unit tests for analyzer
+│   │   └── test_sentiment_utils.py     # Unit tests for utilities
+│   ├── integration/
+│   │   └── test_end_to_end.py         # Integration tests
+│   └── conftest.py                     # Test fixtures
 ├── poetry.lock                 # Lock file for dependencies
-└── pyproject.toml             # Project configuration
+├── pyproject.toml             # Project configuration
+└── README.md                  # Project documentation
 ```
-
-## Configuration
-
-The sentiment analyzer can be configured through `app/config/settings.py`:
-
-- `MODEL_NAME`: The HuggingFace model to use
-- `MAX_LENGTH`: Maximum sequence length for tokenization
-- `BATCH_SIZE`: Batch size for processing
-- `CONFIDENCE_THRESHOLD`: Threshold for confident predictions
-
-## Technical Details
-
-### Model
-
-The analyzer uses DistilBERT, a lightweight version of BERT that maintains good performance while being faster and requiring less computational resources. Specifically, it uses the `distilbert-base-uncased-finetuned-sst-2-english` model, which is fine-tuned for sentiment analysis on the SST-2 (Stanford Sentiment Treebank) dataset.
-
-### Sentiment Classification
-
-- **POSITIVE**: Indicates positive sentiment (confidence score > 0.5)
-- **NEGATIVE**: Indicates negative sentiment (confidence score ≤ 0.5)
-- **Confidence Score**: Range from 0 to 1, indicating the model's certainty
-- **Confident Prediction**: Boolean flag indicating if the confidence exceeds the threshold
 
 ## Testing
 
@@ -141,19 +126,6 @@ poetry run pytest
 Run tests with coverage report:
 ```bash
 poetry run pytest --cov=app tests/
-```
-
-### Test Structure
-
-```
-tests/
-├── unit/
-│   ├── test_sentiment_analyzer.py    # Unit tests for core analyzer
-│   ├── test_sentiment_utils.py       # Unit tests for utility functions
-│   └── test_model_manager.py         # Unit tests for model management
-├── integration/
-│   └── test_end_to_end.py           # End-to-end integration tests
-└── conftest.py                       # Test fixtures and configuration
 ```
 
 ### Test Categories
@@ -177,53 +149,12 @@ tests/
    - GPU utilization efficiency
    - Batch processing optimization
 
-### Writing Tests
-
-Example of writing a test:
-
-```python
-def test_sentiment_analysis_positive():
-    from app.utils.sentiment_utils import analyze_sentiment
-    
-    # Test case
-    text = "I absolutely love this product!"
-    result = analyze_sentiment(text)
-    
-    # Assertions
-    assert result["sentiment"] == "POSITIVE"
-    assert result["confidence"] > 0.9
-    assert result["is_confident"] is True
-
-def test_sentiment_analysis_batch():
-    from app.utils.sentiment_utils import analyze_sentiment
-    
-    # Test cases
-    texts = [
-        "Great product!",
-        "Terrible service",
-        "Neutral opinion"
-    ]
-    results = analyze_sentiment(texts)
-    
-    # Assertions
-    assert len(results) == 3
-    assert all(isinstance(r, dict) for r in results)
-    assert all("sentiment" in r for r in results)
-```
-
 ### Test Coverage Goals
 
 - Minimum 85% code coverage
 - 100% coverage for core sentiment analysis logic
 - All public APIs must be tested
 - Edge cases and error conditions covered
-
-### Continuous Integration
-
-Tests are automatically run on:
-- Every pull request
-- Merges to main branch
-- Daily scheduled runs
 
 ### Development Workflow
 
@@ -242,6 +173,28 @@ Tests are automatically run on:
    ```
 3. Ensure all tests pass before submitting PR
 4. Include new tests for bug fixes
+
+## Configuration
+
+The sentiment analyzer can be configured through `app/config/settings.py`:
+
+- `MODEL_NAME`: The HuggingFace model to use
+- `MAX_LENGTH`: Maximum sequence length for tokenization
+- `BATCH_SIZE`: Batch size for processing
+- `CONFIDENCE_THRESHOLD`: Threshold for confident predictions
+
+## Technical Details
+
+### Model
+
+The analyzer uses DistilBERT, a lightweight version of BERT that maintains good performance while being faster and requiring less computational resources. Specifically, it uses the `distilbert-base-uncased-finetuned-sst-2-english` model, which is fine-tuned for sentiment analysis on the SST-2 (Stanford Sentiment Treebank) dataset.
+
+### Sentiment Classification
+
+- **POSITIVE**: Indicates positive sentiment (confidence score > 0.5)
+- **NEGATIVE**: Indicates negative sentiment (confidence score ≤ 0.5)
+- **Confidence Score**: Range from 0 to 1, indicating the model's certainty
+- **Confident Prediction**: Boolean flag indicating if the confidence exceeds the threshold
 
 ## Contributing
 
@@ -263,5 +216,4 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 
 ## Contact
 
-Your Name - your.email@example.com
-Project Link: https://github.com/yourusername/ai-sentiment-analyzer
+Project Link: https://github.com/dimpletz/ai-sentiment-analyzer
