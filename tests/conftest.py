@@ -1,5 +1,10 @@
 """
 Common test fixtures and configurations.
+
+This module provides shared test fixtures and configurations used across
+the test suite, including model instances and sample data.
+
+Author: Ofelia Webb <ofelia.b.webb@gmail.com>
 """
 
 import pytest

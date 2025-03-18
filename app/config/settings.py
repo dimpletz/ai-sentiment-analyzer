@@ -1,5 +1,10 @@
 """
 Configuration settings for the sentiment analyzer.
+
+This module contains all configuration parameters for the sentiment analyzer,
+including model settings, thresholds, and labels.
+
+Author: Ofelia Webb <ofelia.b.webb@gmail.com>
 """
 
 # Model settings

@@ -1,5 +1,10 @@
 """
 Unit tests for the sentiment analyzer.
+
+This module contains unit tests for the core sentiment analyzer functionality,
+including initialization, text processing, and sentiment prediction.
+
+Author: Ofelia Webb <ofelia.b.webb@gmail.com>
 """
 
 import pytest

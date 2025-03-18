@@ -1,5 +1,10 @@
 """
 Unit tests for sentiment utility functions.
+
+This module contains unit tests for the sentiment utility functions,
+including text analysis and summary statistics generation.
+
+Author: Ofelia Webb <ofelia.b.webb@gmail.com>
 """
 
 import pytest

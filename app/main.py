@@ -5,6 +5,8 @@ This module serves as the entry point for the sentiment analyzer application.
 It demonstrates the usage of the sentiment analysis functionality with example texts
 and displays both individual results and summary statistics.
 
+Author: Ofelia Webb <ofelia.b.webb@gmail.com>
+
 Example:
     $ python -m app.main
     Individual Results:

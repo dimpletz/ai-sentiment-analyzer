@@ -1,5 +1,10 @@
 """
 Integration tests for the sentiment analyzer.
+
+This module contains end-to-end integration tests for the sentiment analyzer,
+testing the complete workflow from text input to sentiment analysis output.
+
+Author: Ofelia Webb <ofelia.b.webb@gmail.com>
 """
 
 import pytest
