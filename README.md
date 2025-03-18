@@ -1,33 +1,19 @@
 # AI Sentiment Analyzer
 
-A powerful sentiment analysis tool using DistilBERT for accurate text sentiment classification. This tool provides fast and reliable sentiment analysis with confidence scoring and batch processing capabilities.
+A powerful sentiment analysis tool built with Python using DistilBERT, designed to analyze text and determine sentiment with high confidence.
 
 ## Features
 
-- **Advanced Sentiment Analysis**
-  - Single text and batch text analysis
-  - Binary sentiment classification (Positive/Negative)
-  - Confidence scoring for each prediction
-  - Configurable confidence threshold
-  - Summary statistics for batch analysis
-
-- **Technical Features**
-  - GPU acceleration support (automatically uses CUDA if available)
-  - Thread-safe implementation
-  - Efficient batch processing
-  - Memory-optimized model loading
-  - Singleton pattern for resource management
-
-- **Developer Features**
-  - Type hints for better IDE support
-  - Comprehensive documentation
-  - Modular architecture
-  - Easy to extend and customize
+- **Accurate Sentiment Analysis**: Uses DistilBERT (distilbert-base-uncased-finetuned-sst-2-english) for state-of-the-art sentiment analysis
+- **Confidence Scoring**: Provides confidence scores for each prediction
+- **Batch Processing**: Analyze multiple texts simultaneously
+- **Summary Statistics**: Generate comprehensive statistics about sentiment distribution
+- **GPU Support**: Automatic GPU utilization when available for faster processing
+- **Easy Integration**: Simple API for integration into other projects
 
 ## Requirements
 
 - Python 3.8.1 or higher
-- CUDA-capable GPU (optional, for faster processing)
 - Poetry for dependency management
 
 ## Installation
@@ -45,11 +31,40 @@ poetry install
 
 ## Usage
 
-### Basic Usage
+### Running the Application
 
-Run the example script to see the sentiment analyzer in action:
+You can run the application in two ways:
+
+1. Using Poetry:
+```bash
+poetry run python app/main.py
+```
+
+2. As a Python module:
 ```bash
 poetry run python -m app.main
+```
+
+### Example Output
+
+```
+Individual Results:
+
+Text: I absolutely love this product! It's amazing!
+Sentiment: POSITIVE
+Confidence: 1.00
+Confident Prediction: True
+
+Text: This is the worst experience ever.
+Sentiment: NEGATIVE
+Confidence: 1.00
+Confident Prediction: True
+
+Summary Statistics:
+Total Texts: 2
+Positive: 1 (50.0%)
+Negative: 1 (50.0%)
+Confident Predictions: 2 (100.0%)
 ```
 
 ### Using in Your Code
@@ -60,48 +75,18 @@ from app.utils.sentiment_utils import analyze_sentiment, get_sentiment_summary
 # Analyze a single text
 result = analyze_sentiment("I love this product!")
 print(result)
-# Output: {
-#     'text': 'I love this product!',
-#     'sentiment': 'POSITIVE',
-#     'confidence': 0.98,
-#     'is_confident': True
-# }
+# Output: {'text': 'I love this product!', 'sentiment': 'POSITIVE', 'confidence': 0.98, 'is_confident': True}
 
 # Analyze multiple texts
 texts = [
-    "Great product!",
-    "Terrible service",
-    "It's okay",
-    "The weather is nice today",
-    "I'm not sure about this"
+    "I absolutely love this product!",
+    "This is the worst experience ever.",
+    "The weather is okay today."
 ]
 results = analyze_sentiment(texts)
-print(results)
 
 # Get summary statistics
 summary = get_sentiment_summary(results)
-print(summary)
-# Output: {
-#     'total_texts': 5,
-#     'positive_count': 2,
-#     'negative_count': 2,
-#     'confident_predictions': 4,
-#     'positive_percentage': 40.0,
-#     'negative_percentage': 40.0,
-#     'confidence_rate': 80.0
-# }
-```
-
-### Advanced Usage
-
-```python
-from app.utils.sentiment_analyzer import SentimentAnalyzer
-
-# Create a custom analyzer instance
-analyzer = SentimentAnalyzer()
-
-# Analyze with custom batch size
-results = analyzer.analyze(["Text 1", "Text 2", "Text 3"])
 ```
 
 ## Project Structure
@@ -109,61 +94,154 @@ results = analyzer.analyze(["Text 1", "Text 2", "Text 3"])
 ```
 ai-sentiment-analyzer/
 ├── app/
-│   ├── __init__.py
-│   ├── main.py
 │   ├── config/
-│   │   └── settings.py
+│   │   └── settings.py         # Configuration settings
 │   ├── models/
-│   │   ├── __init__.py
-│   │   └── model_manager.py
-│   └── utils/
-│       ├── __init__.py
-│       ├── sentiment_analyzer.py
-│       └── sentiment_utils.py
-├── pyproject.toml
-└── README.md
+│   │   └── model_manager.py    # Model loading and management
+│   ├── utils/
+│   │   ├── sentiment_utils.py  # High-level utility functions
+│   │   └── sentiment_analyzer.py# Core sentiment analysis logic
+│   └── main.py                 # Application entry point
+├── tests/                      # Test files
+├── poetry.lock                 # Lock file for dependencies
+└── pyproject.toml             # Project configuration
 ```
 
 ## Configuration
 
-You can modify the following settings in `app/config/settings.py`:
-- `MODEL_NAME`: The pre-trained model to use
-- `MAX_LENGTH`: Maximum sequence length for tokenization
-- `CONFIDENCE_THRESHOLD`: Minimum confidence for predictions
-- `SENTIMENT_LABELS`: Mapping of model outputs to sentiment labels
+The sentiment analyzer can be configured through `app/config/settings.py`:
 
-## Development
+- `MODEL_NAME`: The HuggingFace model to use
+- `MAX_LENGTH`: Maximum sequence length for tokenization
+- `BATCH_SIZE`: Batch size for processing
+- `CONFIDENCE_THRESHOLD`: Threshold for confident predictions
+
+## Technical Details
+
+### Model
+
+The analyzer uses DistilBERT, a lightweight version of BERT that maintains good performance while being faster and requiring less computational resources. Specifically, it uses the `distilbert-base-uncased-finetuned-sst-2-english` model, which is fine-tuned for sentiment analysis on the SST-2 (Stanford Sentiment Treebank) dataset.
+
+### Sentiment Classification
+
+- **POSITIVE**: Indicates positive sentiment (confidence score > 0.5)
+- **NEGATIVE**: Indicates negative sentiment (confidence score ≤ 0.5)
+- **Confidence Score**: Range from 0 to 1, indicating the model's certainty
+- **Confident Prediction**: Boolean flag indicating if the confidence exceeds the threshold
+
+## Testing
 
 ### Running Tests
+
+Run the test suite using Poetry:
 ```bash
 poetry run pytest
 ```
 
-### Code Formatting
+Run tests with coverage report:
 ```bash
-poetry run black .
-poetry run isort .
+poetry run pytest --cov=app tests/
 ```
 
-### Type Checking
-```bash
-poetry run mypy .
+### Test Structure
+
+```
+tests/
+├── unit/
+│   ├── test_sentiment_analyzer.py    # Unit tests for core analyzer
+│   ├── test_sentiment_utils.py       # Unit tests for utility functions
+│   └── test_model_manager.py         # Unit tests for model management
+├── integration/
+│   └── test_end_to_end.py           # End-to-end integration tests
+└── conftest.py                       # Test fixtures and configuration
 ```
 
-## Performance
+### Test Categories
 
-- The model uses DistilBERT, a lighter and faster version of BERT
-- GPU acceleration is automatically enabled when available
-- Batch processing is optimized for memory efficiency
-- The singleton pattern ensures efficient resource usage
+1. **Unit Tests**
+   - Sentiment analysis accuracy
+   - Confidence score calculation
+   - Batch processing functionality
+   - Model loading and management
+   - Utility function behavior
 
-## Author
+2. **Integration Tests**
+   - End-to-end text analysis workflow
+   - Model loading and prediction pipeline
+   - Batch processing with various text types
+   - Error handling and edge cases
 
-Ofelia Webb <ofelia.b.webb@gmail.com>
+3. **Performance Tests**
+   - Processing speed benchmarks
+   - Memory usage monitoring
+   - GPU utilization efficiency
+   - Batch processing optimization
 
-## License
+### Writing Tests
 
-This project is licensed under the MIT License - see the LICENSE file for details.
+Example of writing a test:
+
+```python
+def test_sentiment_analysis_positive():
+    from app.utils.sentiment_utils import analyze_sentiment
+    
+    # Test case
+    text = "I absolutely love this product!"
+    result = analyze_sentiment(text)
+    
+    # Assertions
+    assert result["sentiment"] == "POSITIVE"
+    assert result["confidence"] > 0.9
+    assert result["is_confident"] is True
+
+def test_sentiment_analysis_batch():
+    from app.utils.sentiment_utils import analyze_sentiment
+    
+    # Test cases
+    texts = [
+        "Great product!",
+        "Terrible service",
+        "Neutral opinion"
+    ]
+    results = analyze_sentiment(texts)
+    
+    # Assertions
+    assert len(results) == 3
+    assert all(isinstance(r, dict) for r in results)
+    assert all("sentiment" in r for r in results)
+```
+
+### Test Coverage Goals
+
+- Minimum 85% code coverage
+- 100% coverage for core sentiment analysis logic
+- All public APIs must be tested
+- Edge cases and error conditions covered
+
+### Continuous Integration
+
+Tests are automatically run on:
+- Every pull request
+- Merges to main branch
+- Daily scheduled runs
+
+### Development Workflow
+
+1. Write tests before implementing features (TDD)
+2. Run tests locally before committing:
+   ```bash
+   # Format code
+   poetry run black .
+   poetry run isort .
+   
+   # Run type checking
+   poetry run mypy .
+   
+   # Run tests
+   poetry run pytest
+   ```
+3. Ensure all tests pass before submitting PR
+4. Include new tests for bug fixes
 
 ## Contributing
 
@@ -172,3 +250,18 @@ This project is licensed under the MIT License - see the LICENSE file for detail
 3. Commit your changes (`git commit -m 'Add some amazing feature'`)
 4. Push to the branch (`git push origin feature/amazing-feature`)
 5. Open a Pull Request
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
+
+## Acknowledgments
+
+- HuggingFace Transformers library
+- DistilBERT model creators
+- PyTorch team
+
+## Contact
+
+Your Name - your.email@example.com
+Project Link: https://github.com/yourusername/ai-sentiment-analyzer

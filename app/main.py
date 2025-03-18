@@ -15,6 +15,13 @@ Example:
     ...
 """
 
+import os
+import sys
+
+# Add the project root directory to Python path
+project_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, project_root)
+
 from app.utils.sentiment_utils import analyze_sentiment, get_sentiment_summary
 
 def main() -> int:
@@ -35,7 +42,10 @@ def main() -> int:
         "This is the worst experience ever.",
         "The weather is okay today.",
         "The service was excellent and the staff was very friendly.",
-        "I'm not sure how I feel about this."
+        "I'm not sure how I feel about this.",
+        "I love dogs",
+        "I don't know what to think",
+        "I love chocolate but I hate chocolate cake"
     ]
     
     # Analyze sentiments
