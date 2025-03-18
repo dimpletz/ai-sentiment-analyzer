@@ -20,7 +20,7 @@ A powerful sentiment analysis tool built with Python using DistilBERT, designed 
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/ai-sentiment-analyzer.git
+git clone https://github.com/dimpletz/ai-sentiment-analyzer.git
 cd ai-sentiment-analyzer
 ```
 
