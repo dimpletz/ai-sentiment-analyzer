@@ -128,26 +128,39 @@ Run tests with coverage report:
 poetry run pytest --cov=app tests/
 ```
 
-### Test Categories
+### Test Structure
 
-1. **Unit Tests**
-   - Sentiment analysis accuracy
-   - Confidence score calculation
-   - Batch processing functionality
-   - Model loading and management
-   - Utility function behavior
+The test suite is organized into three main components:
 
-2. **Integration Tests**
-   - End-to-end text analysis workflow
-   - Model loading and prediction pipeline
-   - Batch processing with various text types
-   - Error handling and edge cases
+1. **Unit Tests** (`tests/unit/`)
+   - `test_sentiment_analyzer.py`: Tests for core analyzer functionality
+     - Initialization and configuration
+     - Single text analysis
+     - Batch text processing
+     - Edge cases (empty text, long text)
+     - Sentiment classification accuracy
+     - Confidence threshold handling
+   
+   - `test_sentiment_utils.py`: Tests for utility functions
+     - Single and batch text analysis
+     - Summary statistics generation
+     - Input validation
+     - Error handling
+     - Statistical accuracy
 
-3. **Performance Tests**
-   - Processing speed benchmarks
-   - Memory usage monitoring
-   - GPU utilization efficiency
-   - Batch processing optimization
+2. **Integration Tests** (`tests/integration/`)
+   - `test_end_to_end.py`: End-to-end workflow tests
+     - Complete analysis pipeline
+     - Model loading and prediction
+     - Batch processing performance
+     - Error handling and recovery
+     - Sentiment consistency checks
+
+3. **Test Fixtures** (`tests/conftest.py`)
+   - Common test data and configurations
+   - Model manager fixtures
+   - Sentiment analyzer fixtures
+   - Sample text fixtures (positive, negative, neutral)
 
 ### Test Coverage Goals
 
@@ -155,6 +168,32 @@ poetry run pytest --cov=app tests/
 - 100% coverage for core sentiment analysis logic
 - All public APIs must be tested
 - Edge cases and error conditions covered
+
+### Key Test Cases
+
+1. **Sentiment Analysis Accuracy**
+   - Positive sentiment detection
+   - Negative sentiment detection
+   - Confidence score validation
+   - Threshold-based confidence flags
+
+2. **Batch Processing**
+   - Multiple text analysis
+   - Performance with large batches
+   - Memory efficiency
+   - Result consistency
+
+3. **Error Handling**
+   - Empty text handling
+   - Very long text processing
+   - Special character handling
+   - Invalid input validation
+
+4. **Model Integration**
+   - Model loading
+   - Device (CPU/GPU) handling
+   - Tokenization
+   - Prediction pipeline
 
 ### Development Workflow
 
